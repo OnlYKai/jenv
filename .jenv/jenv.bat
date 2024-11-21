@@ -1,7 +1,7 @@
 @echo off
 
 if /i "%~1"=="list" (
-    powershell -File "%~dp0jenv.ps1" %*
+    powershell -File "%~dp0jenv.ps1" %* -cmd
 ) else if /i "%~1"=="global" (
     goto global
 ) else if /i "%~1"=="set" (
@@ -11,24 +11,11 @@ if /i "%~1"=="list" (
 ) else if /i "%~1"=="use" (
     goto local
 ) else if /i "%~1"=="link" (
-    powershell -File "%~dp0jenv.ps1" %*
+    powershell -File "%~dp0jenv.ps1" %* -cmd
 ) else if /i "%~1"=="help" (
-    echo jenv list - Lists all versions ^(folders^) in 'C:\Program Files\Java'.
-    echo.
-    echo jenv global/set ^<version^> - Sets java version ^(JAVA_HOME^) globally.
-    echo jenv local/use ^<version^> - Sets java version ^(JAVA_HOME^) for the current shell.
-    echo.
-    echo Links - With links you can call a version without changing the local or global variable.
-    echo Example: A link named 'java8' would be used like 'java8 -version' ^(java8w for javaw^).
-    echo jenv link list - Lists all existing links.
-    echo jenv link create ^<name^> ^<version^>
-    echo jenv link remove ^<name^>
-    echo jenv link rename ^<name^> ^<new_name^>
-    echo.
-    powershell -Command "Write-Host '*<version> can be what is listed in ''jenv list'' (\"jdk-\" at the beginning can be omitted), ' -ForegroundColor Yellow"
-    powershell -Command "Write-Host '           or a full path to a java versions folder (NOT the ''bin'' folder, it''s parent folder).' -ForegroundColor Yellow"
-    powershell -Command "Write-Host '           (In CMD, full path only works for links, not global/local!)' -ForegroundColor DarkYellow"
-    powershell -Command "Write-Host '           YOU ARE CURRENTLY IN CMD!' -ForegroundColor Red"
+    powershell -File "%~dp0jenv.ps1" %* -cmd
+) else if /i "%~1"=="update" (
+    powershell -File "%~dp0jenv.ps1" %* -cmd
 ) else if not "%~1"=="" (
     echo Invalid argument. Use 'jenv help'
 ) else (

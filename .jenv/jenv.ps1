@@ -2,7 +2,8 @@ param (
     [string]$arg1,
     [string]$arg2,
     [string]$arg3,
-    [string]$arg4
+    [string]$arg4,
+    [switch]$cmd
 )
 
 if ($arg1 -ieq "list") {
@@ -130,21 +131,65 @@ if ($arg1 -ieq "list") {
         Write-Host "Don't create, remove, or rename links ending in 'w'! (Reserved for javaw)"
     }
 } elseif ($arg1 -ieq "help") {
-    Write-Host "jenv list - Lists all versions (folders) in 'C:\Program Files\Java'."
+    #Write-Host ("━" * (Get-Host).UI.RawUI.WindowSize.Width) # This crashes when called from cmd
+    Write-Host (-join ((0..((Get-Host).UI.RawUI.WindowSize.Width - 1)) | ForEach-Object { [char]0x2501 }))
+
+    Write-Host "jenv list - Lists all versions (folders) in " -NoNewline
+    Write-Host "'C:\Program Files\Java'" -ForegroundColor Yellow -NoNewline
+    Write-Host "."
+
     Write-Host ""
-    Write-Host "jenv global/set <version> - Sets java version (JAVA_HOME) globally."
-    Write-Host "jenv local/use <version> - Sets java version (JAVA_HOME) for the current shell."
+    Write-Host "jenv global/set <version> - Sets java version (JAVA_HOME) " -NoNewline
+    Write-Host "globally" -ForegroundColor Yellow -NoNewline
+    Write-Host "."
+    Write-Host "jenv local/use <version> - Sets java version (JAVA_HOME) for the " -NoNewline
+    Write-Host "current shell" -ForegroundColor Yellow -NoNewline
+    Write-Host "."
+
     Write-Host ""
-    Write-Host "Links - With links you can call a version without changing the local or global variable."
-    Write-Host "Example: A link named 'java8' would be used like 'java8 -version' (java8w for javaw)."
+    Write-Host "Links" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " - With links you can call a version without changing the local or global variable." -ForegroundColor Yellow
+    Write-Host "Example: A link named " -ForegroundColor Yellow -NoNewline
+    Write-Host "'java8'" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " would be used like " -ForegroundColor Yellow -NoNewline
+    Write-Host "'java8 -version'" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " (" -ForegroundColor Yellow -NoNewline
+    Write-Host "java8w" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " for javaw)." -ForegroundColor Yellow
+
     Write-Host "jenv link list - Lists all existing links."
     Write-Host "jenv link create <name> <version>"
     Write-Host "jenv link remove <name>"
     Write-Host "jenv link rename <name> <new_name>"
+
     Write-Host ""
-    Write-Host "*<version> can be what is listed in 'jenv list' (`"jdk-`" at the beginning can be omitted), " -ForegroundColor Yellow
-    Write-Host "           or a full path to a java versions folder (NOT the 'bin' folder, it's parent folder)." -ForegroundColor Yellow
-    Write-Host "           (In CMD, full path only works for links, not global/local!)" -ForegroundColor DarkYellow
+    Write-Host "<version>" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " can be what is listed by " -ForegroundColor Yellow -NoNewline
+    Write-Host "'jenv list'" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " (" -ForegroundColor Yellow -NoNewline
+    Write-Host "`"jdk-`"" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " at the beginning " -ForegroundColor Yellow -NoNewline
+    Write-Host "can be omitted" -ForegroundColor DarkYellow -NoNewline
+    Write-Host "), " -ForegroundColor Yellow
+
+    Write-Host "          or the " -ForegroundColor Yellow -NoNewline
+    Write-Host "full path" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " to a java versions folder (" -ForegroundColor Yellow -NoNewline
+    Write-Host "NOT" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " the " -ForegroundColor Yellow -NoNewline
+    Write-Host "'bin'" -ForegroundColor DarkYellow -NoNewline
+    Write-Host " folder, it's parent folder)." -ForegroundColor Yellow
+
+    Write-Host "          (In CMD, full path only works for links, not global/local!)" -ForegroundColor DarkYellow
+    if ($cmd) { Write-Host "          YOU ARE CURRENTLY USING CMD!" -ForegroundColor Red }
+
+    Write-Host ""
+    Write-Host "jenv update - Re-Downloads files."
+
+    Write-Host (-join ((0..((Get-Host).UI.RawUI.WindowSize.Width - 1)) | ForEach-Object { [char]0x2501 }))
+} elseif ($arg1 -ieq "update") {
+    Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/OnlYKai/jenv/main/jenv-install.ps1" -OutFile "$PSScriptRoot\jenv-install.ps1"
+    &"$PSScriptRoot\jenv-install.ps1" -here
 } elseif ($arg1 -ne "") {
     Write-Host "Invalid Argument. Use 'jenv help'"
 } else {
