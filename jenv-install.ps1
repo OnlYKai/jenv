@@ -12,7 +12,7 @@ if (([System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVar
 }
 
 Write-Host "Creating folder structure..."
-if (-not (Test-Path "$installPath\.jenv\links")) { New-Item -Path "$installPath\.jenv\links" -ItemType Directory }
+if (-not (Test-Path "$installPath\.jenv\links")) { New-Item -Path "$installPath\.jenv\links" -ItemType Directory >$null }
 
 Write-Host "Downloading files..."
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/OnlYKai/jenv/main/.jenv/java.bat" -OutFile "$installPath\.jenv\java.bat"

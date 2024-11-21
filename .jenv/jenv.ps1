@@ -7,7 +7,6 @@ param (
 
 if ($arg1 -ieq "list") {
     Get-ChildItem -Path "C:\Program Files\Java" -Directory | Sort-Object { [regex]::Replace($_.Name, '\d+', { $args[0].Value.PadLeft(50) }) } | ForEach-Object { Write-Host $_.Name }
-    Write-Host "$PSScriptRoot - $PSCommandPath"
 } elseif (($arg1 -ieq "global") -or ($arg1 -ieq "set")) {
     if ($arg2 -ne "") {
         $arg2 = $arg2 -replace "/", "\"
@@ -58,26 +57,26 @@ if ($arg1 -ieq "list") {
                 if (-not (Test-Path "$PSScriptRoot\links\$arg3.bat")) {
                     $arg4 = $arg4 -replace "/", "\"
                     if (($arg4 -like "*\*") -and (Test-Path "$arg4")) {
-                        New-Item -Path "$PSScriptRoot\links\$arg3.bat" -ItemType File
+                        New-Item -Path "$PSScriptRoot\links\$arg3.bat" -ItemType File >$null
                         Set-Content -Path "$PSScriptRoot\links\$arg3.bat" -Value "@echo off"
                         Add-Content -Path "$PSScriptRoot\links\$arg3.bat" -Value "`"$arg4\bin\java`" %*" -NoNewline
-                        New-Item -Path "$PSScriptRoot\links\$($arg3)w.bat" -ItemType File
+                        New-Item -Path "$PSScriptRoot\links\$($arg3)w.bat" -ItemType File >$null
                         Set-Content -Path "$PSScriptRoot\links\$($arg3)w.bat" -Value "@echo off"
                         Add-Content -Path "$PSScriptRoot\links\$($arg3)w.bat" -Value "`"$arg4\bin\javaw`" %*" -NoNewline
                         Write-Host "Created link '$arg3' and '$($arg3)w' for version '$arg4'."
                     } elseif (Test-Path "C:\Program Files\Java\$arg4") {
-                        New-Item -Path "$PSScriptRoot\links\$arg3.bat" -ItemType File
+                        New-Item -Path "$PSScriptRoot\links\$arg3.bat" -ItemType File >$null
                         Set-Content -Path "$PSScriptRoot\links\$arg3.bat" -Value "@echo off"
                         Add-Content -Path "$PSScriptRoot\links\$arg3.bat" -Value "`"C:\Program Files\Java\$arg4\bin\java`" %*" -NoNewline
-                        New-Item -Path "$PSScriptRoot\links\$($arg3)w.bat" -ItemType File
+                        New-Item -Path "$PSScriptRoot\links\$($arg3)w.bat" -ItemType File >$null
                         Set-Content -Path "$PSScriptRoot\links\$($arg3)w.bat" -Value "@echo off"
                         Add-Content -Path "$PSScriptRoot\links\$($arg3)w.bat" -Value "`"C:\Program Files\Java\$arg4\bin\javaw`" %*" -NoNewline
                         Write-Host "Created link '$arg3' and '$($arg3)w' for version '$arg4'."
                     } elseif (Test-Path "C:\Program Files\Java\jdk-$arg4") {
-                        New-Item -Path "$PSScriptRoot\links\$arg3.bat" -ItemType File
+                        New-Item -Path "$PSScriptRoot\links\$arg3.bat" -ItemType File >$null
                         Set-Content -Path "$PSScriptRoot\links\$arg3.bat" -Value "@echo off"
                         Add-Content -Path "$PSScriptRoot\links\$arg3.bat" -Value "`"C:\Program Files\Java\jdk-$arg4\bin\java`" %*" -NoNewline
-                        New-Item -Path "$PSScriptRoot\links\$($arg3)w.bat" -ItemType File
+                        New-Item -Path "$PSScriptRoot\links\$($arg3)w.bat" -ItemType File >$null
                         Set-Content -Path "$PSScriptRoot\links\$($arg3)w.bat" -Value "@echo off"
                         Add-Content -Path "$PSScriptRoot\links\$($arg3)w.bat" -Value "`"C:\Program Files\Java\jdk-$arg4\bin\javaw`" %*" -NoNewline
                         Write-Host "Created link '$arg3' and '$($arg3)w' for version 'jdk-$arg4'."
