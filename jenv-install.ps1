@@ -24,6 +24,7 @@ if (([System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVar
             Write-Host "INSTALLATION FAILED!" -ForegroundColor Red
             Write-Host "Administrator privileges are needed to add variables to Path." -ForegroundColor Yellow
         }
+        Write-Host (-join ((0..((Get-Host).UI.RawUI.WindowSize.Width - 1)) | ForEach-Object { [char]0x2501 }))
         exit
     }
 }
